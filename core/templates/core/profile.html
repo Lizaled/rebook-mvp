@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">ЛИЧНЫЙ КАБИНЕТ</h2>
+
+<div class="row">
+    <!-- Левая колонка: Аватар и меню -->
+    <div class="col-md-3 mb-4">
+        <div class="card border-0">
+            <div class="card-body text-center p-0">
+                <div class="bg-light d-inline-block p-4 mb-3 border">
+                    <span style="font-size: 3rem;">👤</span>
+                </div>
+                <h5 class="card-title">{{ user.get_full_name|default:user.username }}</h5>
+                <p class="text-muted small">{{ user.email }}</p>
+                <a href="#" class="btn btn-outline-dark btn-sm w-100 mb-3" style="border-radius: 0;">Изменить данные</a>
+                
+                <div class="list-group text-start">
+                    <a href="#" class="list-group-item list-group-item-action active bg-dark border-dark">Обзор</a>
+                    <a href="#" class="list-group-item list-group-item-action">Мои книги</a>
+                    <a href="#" class="list-group-item list-group-item-action">Полученные</a>
+                    <a href="#" class="list-group-item list-group-item-action">Настройки</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Правая колонка: Статистика и контент -->
+    <div class="col-md-9">
+        <!-- Блок статистики -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="profile-stats-box">
+                    <span class="stat-number">{{ books_given }}</span>
+                    <span class="stat-label">Книг отдано</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="profile-stats-box">
+                    <span class="stat-number">0</span> <!-- Заглушка, если нет логики получения -->
+                    <span class="stat-label">Книг получено</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="profile-stats-box">
+                    <span class="stat-number">{{ user_books.count }}</span>
+                    <span class="stat-label">Активных объявлений</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="profile-stats-box" style="background-color: #e8f5e9; border-color: #c8e6c9;">
+                    <span class="stat-number text-success">{{ co2_saved }} кг</span>
+                    <span class="stat-label">CO₂ сэкономлено</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экологический вклад -->
+        <div class="eco-block">
+            <h4 class="mb-3">ВАШ ЭКОЛОГИЧЕСКИЙ ВКЛАД</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-1"><strong>Статистика сбережений:</strong></p>
+                    <ul class="list-unstyled small">
+                        <li>🌱 CO₂ выброшено предотвращено: <strong>{{ co2_saved }} кг</strong></li>
+                        <li>🌳 Эквивалент деревьев: <strong>{{ co2_saved|floatformat:1 }} дер./год</strong></li>
+                        <li>📄 Сэкономлено бумаги: <strong>{{ co2_saved|floatformat:1 }} кг</strong></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-1"><strong>Достижения:</strong></p>
+                    <div class="d-flex gap-2">
+                        <span class="badge bg-warning text-dark border">Первый обмен</span>
+                        <span class="badge bg-light text-dark border">5 обменов</span>
+                    </div>
+                    <p class="small text-muted mt-2 fst-italic">
+                        "Знаете ли вы? Производство одной новой книги генерирует ~1.5 кг CO₂. Повторное использование помогает сократить углеродный след!"
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Недавняя активность -->
+        <h4 class="mt-4 mb-3">НЕДАВНЯЯ АКТИВНОСТЬ</h4>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                {% if user_books %}
+                    {% for book in user_books|slice:":3" %}
+                    <div class="activity-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong>Книга добавлена:</strong> "{{ book.title }}"
+                                <div class="small text-muted">{{ book.author }}</div>
+                            </div>
+                            <span class="small text-muted">{{ book.created_at|date:"d.m.Y" }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted">У вас пока нет активности.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Требуется действие (пример) -->
+        <div class="action-required d-flex justify-content-between align-items-center">
+            <div>
+                <strong>⚠ Требуется действие</strong>
+                <div class="small">Подтвердите передачу книги "Алгебра 7 класс"</div>
+            </div>
+            <div>
+                <button class="btn btn-dark btn-sm me-2" style="border-radius: 0;">Подтвердить</button>
+                <button class="btn btn-outline-dark btn-sm" style="border-radius: 0;">Отменить</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReBook - Книгообмен</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #e8f5e9; /* Светло-зеленый фон для акцентов */
+            --border-color: #dee2e6;
+            --text-dark: #212529;
+            --btn-black: #000000;
+        }
+        
+        body { 
+            background-color: #ffffff; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            color: var(--text-dark);
+        }
+
+        /* Навигация */
+        .navbar { 
+            border-bottom: 1px solid var(--border-color); 
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .navbar-brand { 
+            font-weight: 700; 
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .nav-link {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        .btn-outline-dark {
+            border-radius: 0;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        /* Заголовки страниц */
+        h1, h2, h3, h4, h5 {
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Карточки книг (Каталог) */
+        .book-card {
+            border: 1px solid var(--border-color);
+            border-radius: 0; /* Прямоугольные углы как на макете */
+            transition: none;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .book-card:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #000;
+        }
+        .book-img-placeholder {
+            background-color: #f8f9fa;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--border-color);
+            color: #adb5bd;
+            font-size: 0.8rem;
+        }
+        .book-body {
+            padding: 1rem;
+            flex-grow: 1;
+        }
+        .book-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+            text-transform: none;
+        }
+        .book-author {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+        .book-meta {
+            font-size: 0.85rem;
+            margin-bottom: 0.2rem;
+        }
+        .book-location {
+            font-size: 0.8rem;
+            color: #495057;
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            display: inline-block;
+            margin-top: 5px;
+            border: 1px solid #e9ecef;
+        }
+        .btn-book-action {
+            background-color: var(--btn-black);
+            color: white;
+            border: none;
+            border-radius: 0;
+            width: 100%;
+            padding: 0.5rem;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: auto;
+        }
+        .btn-book-action:hover {
+            background-color: #333;
+            color: white;
+        }
+
+        /* Профиль */
+        .profile-stats-box {
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #6c757d;
+        }
+        .eco-block {
+            background-color: var(--primary-green);
+            border: 1px solid #c8e6c9;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .activity-item {
+            border-left: 3px solid var(--border-color);
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        .action-required {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Формы */
+        .form-control, .form-select {
+            border-radius: 0;
+            border: 1px solid #ced4da;
+            padding: 0.6rem 0.75rem;
+        }
+        .form-control:focus, .form-select:focus {
+            box-shadow: none;
+            border-color: #000;
+        }
+        .btn-primary-custom {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 0;
+            padding: 0.6rem 1.5rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .btn-primary-custom:hover {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'catalog' %}">[LOGO] ReBook</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'catalog' %}">Каталог</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Как это работает</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Контакты</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item ms-3"><a class="btn btn-outline-dark btn-sm" href="{% url 'profile' %}">Профиль</a></li>
+                        <li class="nav-item ms-2">
+                            <form action="{% url 'logout' %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link nav-link text-decoration-none p-0">Выйти</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item ms-3"><a class="btn btn-outline-dark btn-sm" href="{% url 'login' %}">Войти</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container min-vh-100">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="bg-light py-4 mt-5 border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>[LOGO] ReBook</h5>
+                    <p class="small text-muted">Платформа вторичного использования книг.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Навигация</h5>
+                    <ul class="list-unstyled small">
+                        <li><a href="#" class="text-decoration-none text-muted">Как это работает</a></li>
+                        <li><a href="{% url 'catalog' %}" class="text-decoration-none text-muted">Каталог книг</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Подписка на новости</h5>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Email адрес" aria-label="Email">
+                        <button class="btn btn-dark" type="button">→</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3 small text-muted">
+                &copy; 2026 ReBook. Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

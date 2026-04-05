@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">ДОБАВИТЬ КНИГУ</h2>
+        <p class="text-muted mb-4">Заполните форму, чтобы передать книгу для обмена</p>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <h5 class="mb-3 border-bottom pb-2">Информация о книге</h5>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Название книги *</label>
+                            {{ form.title }}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Автор *</label>
+                            {{ form.author }}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">ISBN (опционально)</label>
+                            {{ form.isbn }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Тип книги *</label>
+                            {{ form.type }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Состояние *</label>
+                            {{ form.condition }}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Описание (опционально)</label>
+                            {{ form.description }}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Фотография книги</label>
+                            {{ form.cover_image }}
+                            <div class="form-text">Загрузите фото обложки или разворота.</div>
+                        </div>
+                    </div>
+
+                    <h5 class="mb-3 border-bottom pb-2 mt-4">Условия передачи</h5>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label class="form-label fw-bold">Точка выдачи *</label>
+                            {{ form.point_of_delivery }}
+                            <div class="form-text">Выберите место, где можно будет забрать книгу.</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
+                        <a href="{% url 'catalog' %}" class="btn btn-outline-dark" style="border-radius: 0;">Отмена</a>
+                        <button type="submit" class="btn btn-primary-custom">Опубликовать книгу</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
